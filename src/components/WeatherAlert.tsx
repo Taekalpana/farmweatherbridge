@@ -5,6 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface WeatherAlertProps {
   alert: WeatherAlertType;
@@ -13,6 +14,7 @@ interface WeatherAlertProps {
 
 export const WeatherAlert: FC<WeatherAlertProps> = ({ alert, onSend }) => {
   const { severity, headline, desc, event, effective, expires } = alert;
+  const { t } = useLanguage();
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -91,7 +93,7 @@ export const WeatherAlert: FC<WeatherAlertProps> = ({ alert, onSend }) => {
             onClick={onSend}
             className="shrink-0 mt-2 md:mt-0"
           >
-            Send Alert
+            {t('button.sendAlert')}
           </Button>
         )}
       </div>

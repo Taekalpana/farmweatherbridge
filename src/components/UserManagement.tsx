@@ -8,11 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Farmer, getFarmers } from '@/services/messagingService';
 import { Smartphone, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const UserManagement: FC = () => {
   const [farmers, setFarmers] = useState<Farmer[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState<'all' | 'smartphone' | 'basic'>('all');
+  const { t } = useLanguage();
   
   useEffect(() => {
     // Fetch farmer data
@@ -37,7 +39,7 @@ const UserManagement: FC = () => {
   const basicPhoneUsers = farmers.filter(f => !f.hasSmartphone).length;
   
   const formatLastContacted = (dateString: string | null) => {
-    if (!dateString) return 'Never';
+    if (!dateString) return t('time.never');
     
     const date = new Date(dateString);
     const now = new Date();
@@ -45,11 +47,11 @@ const UserManagement: FC = () => {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     
     if (diffDays === 0) {
-      return 'Today';
+      return t('time.today');
     } else if (diffDays === 1) {
-      return 'Yesterday';
+      return t('time.yesterday');
     } else {
-      return `${diffDays} days ago`;
+      return `${diffDays} ${t('time.daysAgo')}`;
     }
   };
   
@@ -58,7 +60,7 @@ const UserManagement: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium">Total Farmers</CardTitle>
+            <CardTitle className="text-base font-medium">{t('user.totalFarmers')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{farmers.length}</div>
@@ -70,13 +72,13 @@ const UserManagement: FC = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-medium flex items-center">
               <Smartphone className="h-4 w-4 mr-2" />
-              Smartphone Users
+              {t('user.smartphoneUsers')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{smartphoneUsers}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {Math.round((smartphoneUsers / farmers.length) * 100)}% of total
+              {Math.round((smartphoneUsers / farmers.length) * 100)}% {t('user.ofTotal')}
             </p>
           </CardContent>
         </Card>
@@ -85,13 +87,13 @@ const UserManagement: FC = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-medium flex items-center">
               <MessageSquare className="h-4 w-4 mr-2" />
-              Basic Phone Users
+              {t('user.basicPhoneUsers')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{basicPhoneUsers}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {Math.round((basicPhoneUsers / farmers.length) * 100)}% of total
+              {Math.round((basicPhoneUsers / farmers.length) * 100)}% {t('user.ofTotal')}
             </p>
           </CardContent>
         </Card>
@@ -99,7 +101,7 @@ const UserManagement: FC = () => {
       
       <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
         <Input
-          placeholder="Search farmers by name, phone, or location..."
+          placeholder={t('user.searchPlaceholder')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -107,7 +109,7 @@ const UserManagement: FC = () => {
         
         <Tabs defaultValue="all" value={view} onValueChange={(v) => setView(v as any)}>
           <TabsList>
-            <TabsTrigger value="all">All Users</TabsTrigger>
+            <TabsTrigger value="all">{t('user.allUsers')}</TabsTrigger>
             <TabsTrigger value="smartphone">WhatsApp</TabsTrigger>
             <TabsTrigger value="basic">SMS</TabsTrigger>
           </TabsList>
@@ -118,19 +120,19 @@ const UserManagement: FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Message Type</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Crops</TableHead>
-              <TableHead>Last Contacted</TableHead>
+              <TableHead>{t('table.name')}</TableHead>
+              <TableHead>{t('table.phone')}</TableHead>
+              <TableHead>{t('table.messageType')}</TableHead>
+              <TableHead>{t('table.location')}</TableHead>
+              <TableHead>{t('table.crops')}</TableHead>
+              <TableHead>{t('table.lastContacted')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredFarmers.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  No farmers found matching your search.
+                  {t('user.noFarmersFound')}
                 </TableCell>
               </TableRow>
             ) : (

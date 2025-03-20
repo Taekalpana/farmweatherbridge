@@ -8,11 +8,13 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import WeatherMap from '@/components/WeatherMap';
-import WeatherIcon from '@/components/WeatherIcon';
 import { Cloud, CloudSun, MessageSquare, ChevronRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Index: FC = () => {
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
   
   return (
     <div className="min-h-screen bg-background">
@@ -25,15 +27,16 @@ const Index: FC = () => {
         <header className="mb-8 max-w-4xl animate-in fade-in slide-in-from-left">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight">Weather Dashboard</h1>
+              <h1 className="text-4xl font-bold tracking-tight">{t('weather.dashboard')}</h1>
               <p className="mt-1 text-lg text-muted-foreground">
-                Monitor weather conditions and send alerts to farmers
+                {t('weather.monitoring')}
               </p>
             </div>
             <div className="hidden md:flex items-center space-x-2">
+              <LanguageSelector />
               <Link to="/dashboard">
                 <Button variant="outline" className="flex items-center">
-                  Go to Admin Dashboard
+                  {t('button.goToDashboard')}
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
@@ -47,14 +50,14 @@ const Index: FC = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl flex items-center font-medium">
                   <CloudSun className="mr-2 h-5 w-5" />
-                  Weather Forecasting
+                  {t('feature.forecasting')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">Accurate, real-time weather data for agricultural planning</p>
+                <p className="mb-4">{t('feature.forecasting.desc')}</p>
                 <Link to="/">
                   <Button variant="secondary" size="sm" className="mt-2">
-                    View Forecast
+                    {t('button.viewForecast')}
                   </Button>
                 </Link>
               </CardContent>
@@ -64,14 +67,14 @@ const Index: FC = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl flex items-center font-medium">
                   <MessageSquare className="mr-2 h-5 w-5" />
-                  Messaging System
+                  {t('feature.messaging')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">Send critical weather alerts via SMS and WhatsApp</p>
+                <p className="mb-4">{t('feature.messaging.desc')}</p>
                 <Link to="/messaging">
                   <Button variant="secondary" size="sm" className="mt-2">
-                    Send Messages
+                    {t('button.sendMessages')}
                   </Button>
                 </Link>
               </CardContent>
@@ -81,14 +84,14 @@ const Index: FC = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl flex items-center font-medium">
                   <Cloud className="mr-2 h-5 w-5" />
-                  Weather Alerts
+                  {t('feature.alerts')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">Early warnings for extreme weather conditions</p>
+                <p className="mb-4">{t('feature.alerts.desc')}</p>
                 <Link to="/alerts">
                   <Button variant="secondary" size="sm" className="mt-2">
-                    View Alerts
+                    {t('button.viewAlerts')}
                   </Button>
                 </Link>
               </CardContent>
